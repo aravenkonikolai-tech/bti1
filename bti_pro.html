@@ -2,774 +2,92 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Калибровка плана БТИ</title>
+    <title>Калибровка БТИ</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-            background: #f0f0f0;
-        }
-
-        .container {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-        }
-
-        /* Левая вертикальная панель */
-        .left-panel {
-            width: 340px;
-            background: #2c3e50;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            border-right: 2px solid #1a252f;
-        }
-
-        .panel-section {
-            flex: 1;
-            padding: 15px;
-            overflow-y: auto;
-            border-bottom: 2px solid #1a252f;
-        }
-
-        .panel-section:last-child {
-            border-bottom: none;
-        }
-
-        .panel-title {
-            font-size: 16px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #3498db;
-            text-transform: uppercase;
-        }
-
-        .tool-btn {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 10px;
-            background: #34495e;
-            border: none;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: all 0.3s;
-            text-align: left;
-        }
-
-        .tool-btn:hover:not(:disabled) {
-            background: #3498db;
-        }
-
-        .tool-btn.active {
-            background: #e74c3c;
-        }
-
-        .tool-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .property-group {
-            margin-bottom: 15px;
-        }
-
-        .property-label {
-            font-size: 12px;
-            color: #bdc3c7;
-            margin-bottom: 5px;
-        }
-
-        .property-input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #34495e;
-            border-radius: 3px;
-            background: #34495e;
-            color: white;
-        }
-
-        .property-select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #34495e;
-            border-radius: 3px;
-            background: #34495e;
-            color: white;
-        }
-
-        /* Правая область */
-        .right-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Верхняя горизонтальная панель */
-        .top-panel {
-            height: 60px;
-            background: #34495e;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            gap: 10px;
-            border-bottom: 2px solid #2c3e50;
-        }
-
-        .top-btn {
-            padding: 10px 20px;
-            background: #3498db;
-            border: none;
-            color: white;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        .top-btn:hover:not(:disabled) {
-            background: #2980b9;
-        }
-
-        .top-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .top-btn.danger {
-            background: #e74c3c;
-        }
-
-        .top-btn.danger:hover:not(:disabled) {
-            background: #c0392b;
-        }
-
-        .top-btn.success {
-            background: #27ae60;
-        }
-
-        .top-btn.success:hover:not(:disabled) {
-            background: #219a52;
-        }
-
-        /* Рабочая область с сеткой */
-        .workspace {
-            flex: 1;
-            position: relative;
-            overflow: hidden;
-            background: #ecf0f1;
-        }
-
-        #canvas-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-        }
-
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-        .status-bar {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: rgba(44, 62, 80, 0.9);
-            color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-size: 12px;
-        }
-
-        .line-info {
-            background: rgba(52, 152, 219, 0.9);
-            padding: 5px 10px;
-            border-radius: 3px;
-            margin-top: 5px;
-            font-size: 11px;
-        }
-
-        .instruction {
-            background: rgba(241, 196, 15, 0.9);
-            color: #2c3e50;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            font-size: 12px;
-        }
+        *{margin:0;padding:0;box-sizing:border-box}body{font-family:Arial;overflow:hidden;background:#f0f0f0}.container{display:flex;height:100vh}.left-panel{width:340px;background:#2c3e50;color:white;display:flex;flex-direction:column;border-right:2px solid #1a252f}.panel-section{flex:1;padding:15px;overflow-y:auto;border-bottom:2px solid #1a252f}.panel-title{font-size:16px;font-weight:bold;margin-bottom:15px;color:#3498db;text-transform:uppercase}.tool-btn{width:100%;padding:12px;margin-bottom:10px;background:#34495e;border:none;color:white;cursor:pointer;border-radius:5px;text-align:left}.tool-btn:hover:not(:disabled){background:#3498db}.tool-btn.active{background:#e74c3c}.tool-btn:disabled{opacity:0.5}.property-group{margin-bottom:15px}.property-label{font-size:12px;color:#bdc3c7;margin-bottom:5px}.property-input,.property-select{width:100%;padding:8px;border:1px solid #34495e;border-radius:3px;background:#34495e;color:white}.action-btn{width:100%;padding:10px;background:#27ae60;border:none;color:white;cursor:pointer;border-radius:5px;margin-top:5px}.action-btn:hover:not(:disabled){background:#2ecc71}.right-area{flex:1;display:flex;flex-direction:column}.top-panel{height:60px;background:#34495e;display:flex;align-items:center;padding:0 20px;border-bottom:2px solid #1a252f}.top-panel h2{color:white;font-size:18px}.zoom-controls{margin-left:auto;display:flex;gap:10px;align-items:center}.zoom-btn{width:40px;height:40px;background:#3498db;border:none;color:white;cursor:pointer;border-radius:5px;font-size:20px}.zoom-display{color:white;min-width:60px;text-align:center}.workspace{flex:1;position:relative;overflow:hidden;background:#ecf0f1}#canvas{position:absolute;top:0;left:0}.status-bar{position:absolute;bottom:10px;left:10px;background:rgba(0,0,0,0.7);color:white;padding:8px 15px;border-radius:5px;font-size:14px;pointer-events:none}
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Левая панель -->
-        <div class="left-panel">
-            <!-- Верхняя часть: Инструменты -->
-            <div class="panel-section">
-                <div class="panel-title">🛠️ Инструменты</div>
-                <button class="tool-btn" id="btn-scale" onclick="activateTool('scale')">📏 Масштабировать</button>
-                <button class="tool-btn" id="btn-angle90" onclick="activateTool('angle90')" disabled>📐 Угол 90°</button>
-                <button class="tool-btn" id="btn-cut" onclick="cutImage()" disabled>✂️ Разрезать по осям</button>
-                <button class="tool-btn" id="btn-delete-line" onclick="deleteLastLine()">🗑️ Удалить последнюю линию</button>
-                <button class="tool-btn" id="btn-reset" onclick="resetAll()">🔄 Сбросить всё</button>
-                
-                <div id="instruction" class="instruction" style="display: none;"></div>
-            </div>
-
-            <!-- Нижняя часть: Свойства -->
-            <div class="panel-section">
-                <div class="panel-title">⚙️ Свойства</div>
-                
-                <div id="scale-properties" style="display: none;">
-                    <div class="property-group">
-                        <div class="property-label">Тип линии:</div>
-                        <select class="property-select" id="line-type">
-                            <option value="horizontal">Горизонтальная</option>
-                            <option value="vertical">Вертикальная</option>
-                        </select>
-                    </div>
-                    <div class="property-group">
-                        <div class="property-label">Реальная длина (см):</div>
-                        <input type="number" class="property-input" id="line-length" placeholder="Введите длину">
-                    </div>
-                    <button class="tool-btn success" id="btn-calibrate-scale" onclick="calibrateScale()" disabled>✅ Калибровать масштаб</button>
-                </div>
-
-                <div id="angle90-properties" style="display: none;">
-                    <div class="property-group">
-                        <div class="property-label">Выбрано линий:</div>
-                        <div class="property-input" id="lines-count">0</div>
-                    </div>
-                    <button class="tool-btn success" id="btn-calibrate-angle" onclick="calibrateAngle90()" disabled>✅ Калибровать углы</button>
-                </div>
-
-                <div id="calibrated-info" style="display: none;">
-                    <div class="property-group">
-                        <div class="property-label">Статус:</div>
-                        <div class="property-input" style="background: #27ae60;">Откалибровано</div>
-                    </div>
-                </div>
+<div class="container">
+    <div class="left-panel">
+        <div class="panel-section">
+            <div class="panel-title">Инструменты</div>
+            <button class="tool-btn active" id="btnHand" onclick="setTool('hand')">✋ Рука</button>
+            <button class="tool-btn" id="btnScale" onclick="setTool('scale')">📏 Масштаб</button>
+            <button class="tool-btn" id="btnPin" onclick="setTool('pin')">📌 Булавка</button>
+            <button class="tool-btn" id="btnConnect" onclick="setTool('connect')">🔗 Соединить</button>
+            <button class="tool-btn" id="btnDelete" onclick="setTool('delete')">❌ Удалить</button>
+            <div style="margin-top:20px">
+                <button class="action-btn" onclick="calibrateScale()">⚙️ Калибровать масштаб</button>
+                <button class="action-btn" id="btnAlign90" onclick="alignTo90()" disabled>📐 Углы 90°</button>
+                <button class="action-btn" id="btnCutAxes" onclick="cutByAxes()" disabled>✂️ Разрезать</button>
             </div>
         </div>
-
-        <!-- Правая область -->
-        <div class="right-area">
-            <!-- Верхняя панель -->
-            <div class="top-panel">
-                <button class="top-btn" onclick="document.getElementById('file-input').click()">📁 Загрузить план</button>
-                <input type="file" id="file-input" accept="image/*" style="display: none;" onchange="loadImage(event)">
-                <button class="top-btn" id="btn-save" onclick="saveResult()" disabled>💾 Сохранить результат</button>
-                <button class="top-btn danger" onclick="clearCanvas()">🧹 Очистить линии</button>
+        <div class="panel-section">
+            <div class="panel-title">Свойства</div>
+            <div id="scaleProps" style="display:none">
+                <div class="property-group"><label class="property-label">Тип:</label><select class="property-select" id="lineType"><option value="h">Горизонталь</option><option value="v">Вертикаль</option></select></div>
+                <div class="property-group"><label class="property-label">Длина (см):</label><input type="number" class="property-input" id="realLength" placeholder="500"></div>
             </div>
-
-            <!-- Рабочая область -->
-            <div class="workspace" id="workspace">
-                <div id="canvas-container"></div>
-                <div class="status-bar" id="status-bar">Ожидание загрузки изображения...</div>
+            <div id="pinProps" style="display:none">
+                <div class="property-group"><label class="property-label">Булавок: <span id="pinsCount">0</span></label></div>
+                <div class="property-group"><label class="property-label">Линий: <span id="linesCount">0</span></label></div>
             </div>
         </div>
     </div>
+    <div class="right-area">
+        <div class="top-panel">
+            <h2>План БТИ</h2>
+            <div class="zoom-controls">
+                <button class="zoom-btn" onclick="zoomOut()">−</button>
+                <span class="zoom-display" id="zoomLevel">100%</span>
+                <button class="zoom-btn" onclick="zoomIn()">+</button>
+                <button class="zoom-btn" onclick="resetZoom()">⟲</button>
+            </div>
+        </div>
+        <div class="workspace" id="workspace">
+            <canvas id="canvas"></canvas>
+            <div class="status-bar" id="statusBar">Загрузите план</div>
+        </div>
+    </div>
+</div>
+<script>
+const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d'),workspace=document.getElementById('workspace'),statusBar=document.getElementById('statusBar');
+let currentTool='hand',zoom=1,panX=0,panY=0,isDragging=false,lastMouseX=0,lastMouseY=0;
+let planImage=null,imageX=0,imageY=0,imageWidth=0,imageHeight=0;
+let scaleLines=[],currentScaleLine=null,isDrawingScaleLine=false;
+let pins=[],connections=[],connectionStartPin=null;
 
-    <script>
-        // Глобальные переменные
-        let canvas, ctx, imageCanvas, imageCtx, linesCanvas, linesCtx;
-        let currentImage = null;
-        let currentTool = null;
-        let isDrawing = false;
-        let startPoint = null;
-        let endPoint = null;
-        let scaleLine = null;
-        let angleLines = [];
-        let isCalibrated = false;
-        let scaleFactor = 1;
-        let rotationAngle = 0;
-        let gridCellSize = 5; // см
-        
-        // Инициализация
-        function init() {
-            const container = document.getElementById('canvas-container');
-            const workspace = document.getElementById('workspace');
-            
-            // Создаем канвасы
-            canvas = document.createElement('canvas');
-            canvas.width = workspace.clientWidth;
-            canvas.height = workspace.clientHeight;
-            container.appendChild(canvas);
-            ctx = canvas.getContext('2d');
-            
-            imageCanvas = document.createElement('canvas');
-            imageCanvas.width = workspace.clientWidth;
-            imageCanvas.height = workspace.clientHeight;
-            container.appendChild(imageCanvas);
-            imageCtx = imageCanvas.getContext('2d');
-            
-            linesCanvas = document.createElement('canvas');
-            linesCanvas.width = workspace.clientWidth;
-            linesCanvas.height = workspace.clientHeight;
-            container.appendChild(linesCanvas);
-            linesCtx = linesCanvas.getContext('2d');
-            
-            // Обработчики событий
-            linesCanvas.addEventListener('mousedown', startDrawing);
-            linesCanvas.addEventListener('mousemove', draw);
-            linesCanvas.addEventListener('mouseup', endDrawing);
-            linesCanvas.addEventListener('mouseout', endDrawing);
-            
-            // Рисуем сетку
-            drawGrid();
-            
-            updateStatus('Готов к загрузке изображения');
-        }
-
-        // Рисование сетки
-        function drawGrid() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.strokeStyle = '#bdc3c7';
-            ctx.lineWidth = 0.5;
-            
-            const cellPixels = gridCellSize * 10 * scaleFactor; // 1 см = 10 пикселей базово
-            
-            for (let x = 0; x < canvas.width; x += cellPixels) {
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, canvas.height);
-                ctx.stroke();
-            }
-            
-            for (let y = 0; y < canvas.height; y += cellPixels) {
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(canvas.width, y);
-                ctx.stroke();
-            }
-        }
-
-        // Загрузка изображения
-        function loadImage(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                const img = new Image();
-                img.onload = function() {
-                    currentImage = img;
-                    
-                    // Масштабируем изображение по размеру рабочей области
-                    const scale = Math.min(
-                        canvas.width / img.width,
-                        canvas.height / img.height
-                    ) * 0.9;
-                    
-                    const width = img.width * scale;
-                    const height = img.height * scale;
-                    const x = (canvas.width - width) / 2;
-                    const y = (canvas.height - height) / 2;
-                    
-                    imageCtx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
-                    imageCtx.drawImage(img, x, y, width, height);
-                    
-                    updateStatus('Изображение загружено. Выберите инструмент "Масштабировать"');
-                    document.getElementById('btn-save').disabled = false;
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-
-        // Активация инструмента
-        function activateTool(tool) {
-            // Сбрасываем все активные кнопки
-            document.querySelectorAll('.tool-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            currentTool = tool;
-            document.getElementById(`btn-${tool}`).classList.add('active');
-            
-            // Скрываем все свойства
-            document.getElementById('scale-properties').style.display = 'none';
-            document.getElementById('angle90-properties').style.display = 'none';
-            document.getElementById('instruction').style.display = 'none';
-            
-            const instruction = document.getElementById('instruction');
-            
-            if (tool === 'scale') {
-                document.getElementById('scale-properties').style.display = 'block';
-                instruction.textContent = 'Нарисуйте линию на изображении, которая будет использоваться для калибровки масштаба. Укажите её тип и реальную длину.';
-                instruction.style.display = 'block';
-                updateStatus('Режим масштабирования: нарисуйте линию для калибровки');
-            } else if (tool === 'angle90') {
-                if (!isCalibrated) {
-                    alert('Сначала выполните калибровку масштаба!');
-                    currentTool = null;
-                    document.getElementById('btn-angle90').classList.remove('active');
-                    return;
-                }
-                document.getElementById('angle90-properties').style.display = 'block';
-                instruction.textContent = 'Обведите линии на плане, которые должны быть под углом 90°. После добавления нескольких соединенных линий нажмите "Калибровать углы".';
-                instruction.style.display = 'block';
-                updateStatus('Режим угла 90°: обведите линии для выравнивания');
-            }
-        }
-
-        // Начало рисования
-        function startDrawing(e) {
-            if (!currentTool || !currentImage) return;
-            
-            isDrawing = true;
-            const rect = linesCanvas.getBoundingClientRect();
-            startPoint = {
-                x: e.clientX - rect.left,
-                y: e.clientY - rect.top
-            };
-            endPoint = startPoint;
-        }
-
-        // Процесс рисования
-        function draw(e) {
-            if (!isDrawing || !currentTool) return;
-            
-            const rect = linesCanvas.getBoundingClientRect();
-            endPoint = {
-                x: e.clientX - rect.left,
-                y: e.clientY - rect.top
-            };
-            
-            // Перерисовываем линии
-            redrawLines();
-            
-            // Рисуем текущую линию
-            linesCtx.strokeStyle = currentTool === 'scale' ? '#e74c3c' : '#f39c12';
-            linesCtx.lineWidth = 2;
-            linesCtx.setLineDash([5, 5]);
-            linesCtx.beginPath();
-            linesCtx.moveTo(startPoint.x, startPoint.y);
-            linesCtx.lineTo(endPoint.x, endPoint.y);
-            linesCtx.stroke();
-            linesCtx.setLineDash([]);
-        }
-
-        // Конец рисования
-        function endDrawing(e) {
-            if (!isDrawing || !currentTool) return;
-            
-            isDrawing = false;
-            
-            if (currentTool === 'scale') {
-                // Сохраняем линию масштабирования
-                scaleLine = {
-                    start: {...startPoint},
-                    end: {...endPoint},
-                    type: null,
-                    length: null
-                };
-                
-                // Включаем кнопку калибровки
-                document.getElementById('btn-calibrate-scale').disabled = false;
-                updateStatus('Линия создана. Укажите тип и длину, затем нажмите "Калибровать масштаб"');
-            } else if (currentTool === 'angle90') {
-                // Сохраняем линию угла
-                angleLines.push({
-                    start: {...startPoint},
-                    end: {...endPoint}
-                });
-                
-                document.getElementById('lines-count').textContent = angleLines.length;
-                
-                if (angleLines.length >= 2) {
-                    document.getElementById('btn-calibrate-angle').disabled = false;
-                }
-                
-                updateStatus(`Добавлена линия. Всего: ${angleLines.length}. Добавьте еще линии и нажмите "Калибровать углы"`);
-            }
-            
-            redrawLines();
-        }
-
-        // Перерисовка всех линий
-        function redrawLines() {
-            linesCtx.clearRect(0, 0, linesCanvas.width, linesCanvas.height);
-            
-            // Рисуем линию масштабирования
-            if (scaleLine) {
-                linesCtx.strokeStyle = '#e74c3c';
-                linesCtx.lineWidth = 3;
-                linesCtx.beginPath();
-                linesCtx.moveTo(scaleLine.start.x, scaleLine.start.y);
-                linesCtx.lineTo(scaleLine.end.x, scaleLine.end.y);
-                linesCtx.stroke();
-                
-                // Рисуем маркеры
-                linesCtx.fillStyle = '#e74c3c';
-                linesCtx.beginPath();
-                linesCtx.arc(scaleLine.start.x, scaleLine.start.y, 5, 0, Math.PI * 2);
-                linesCtx.arc(scaleLine.end.x, scaleLine.end.y, 5, 0, Math.PI * 2);
-                linesCtx.fill();
-            }
-            
-            // Рисуем линии углов
-            angleLines.forEach(line => {
-                linesCtx.strokeStyle = '#f39c12';
-                linesCtx.lineWidth = 2;
-                linesCtx.beginPath();
-                linesCtx.moveTo(line.start.x, line.start.y);
-                linesCtx.lineTo(line.end.x, line.end.y);
-                linesCtx.stroke();
-                
-                linesCtx.fillStyle = '#f39c12';
-                linesCtx.beginPath();
-                linesCtx.arc(line.start.x, line.start.y, 4, 0, Math.PI * 2);
-                linesCtx.arc(line.end.x, line.end.y, 4, 0, Math.PI * 2);
-                linesCtx.fill();
-            });
-        }
-
-        // Калибровка масштаба
-        function calibrateScale() {
-            if (!scaleLine) {
-                alert('Сначала нарисуйте линию для калибровки!');
-                return;
-            }
-            
-            const lineType = document.getElementById('line-type').value;
-            const lineLength = parseFloat(document.getElementById('line-length').value);
-            
-            if (!lineLength || lineLength <= 0) {
-                alert('Введите корректную длину линии!');
-                return;
-            }
-            
-            scaleLine.type = lineType;
-            scaleLine.length = lineLength;
-            
-            // Вычисляем коэффициент масштабирования
-            const linePixelLength = Math.sqrt(
-                Math.pow(scaleLine.end.x - scaleLine.start.x, 2) +
-                Math.pow(scaleLine.end.y - scaleLine.start.y, 2)
-            );
-            
-            // 1 см = 10 пикселей в базовой сетке
-            const expectedPixels = lineLength * 10;
-            scaleFactor = expectedPixels / linePixelLength;
-            
-            // Поворачиваем изображение если нужно
-            if (lineType === 'horizontal') {
-                const angle = Math.atan2(scaleLine.end.y - scaleLine.start.y, scaleLine.end.x - scaleLine.start.x);
-                rotationAngle = -angle;
-            } else {
-                const angle = Math.atan2(scaleLine.end.y - scaleLine.start.y, scaleLine.end.x - scaleLine.start.x);
-                rotationAngle = -(angle - Math.PI / 2);
-            }
-            
-            // Применяем трансформацию
-            applyTransformation();
-            
-            isCalibrated = true;
-            scaleFactor = expectedPixels / linePixelLength; // Обновляем после трансформации
-            
-            // Обновляем UI
-            document.getElementById('btn-angle90').disabled = false;
-            document.getElementById('calibrated-info').style.display = 'block';
-            document.getElementById('btn-calibrate-scale').disabled = true;
-            
-            drawGrid();
-            redrawLines();
-            
-            updateStatus('Масштаб откалиброван! Теперь можно использовать инструмент "Угол 90°"');
-        }
-
-        // Применение трансформации
-        function applyTransformation() {
-            if (!currentImage) return;
-            
-            imageCtx.save();
-            imageCtx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
-            
-            // Находим центр линии для вращения
-            const centerX = (scaleLine.start.x + scaleLine.end.x) / 2;
-            const centerY = (scaleLine.start.y + scaleLine.end.y) / 2;
-            
-            imageCtx.translate(centerX, centerY);
-            imageCtx.rotate(rotationAngle);
-            imageCtx.scale(scaleFactor, scaleFactor);
-            imageCtx.translate(-centerX, -centerY);
-            
-            const scale = Math.min(
-                canvas.width / currentImage.width,
-                canvas.height / currentImage.height
-            ) * 0.9;
-            
-            const width = currentImage.width * scale;
-            const height = currentImage.height * scale;
-            const x = (canvas.width - width) / 2;
-            const y = (canvas.height - height) / 2;
-            
-            imageCtx.drawImage(currentImage, x, y, width, height);
-            imageCtx.restore();
-        }
-
-        // Калибровка углов 90°
-        function calibrateAngle90() {
-            if (angleLines.length < 2) {
-                alert('Добавьте минимум 2 линии для калибровки углов!');
-                return;
-            }
-            
-            // Здесь должна быть логика выравнивания углов
-            // Для простоты просто подтверждаем действие
-            updateStatus('Углы откалиброваны! Теперь можно разрезать изображение по осям.');
-            document.getElementById('btn-cut').disabled = false;
-            document.getElementById('btn-calibrate-angle').disabled = true;
-            
-            // Помечаем линии как откалиброванные
-            angleLines.forEach(line => {
-                line.calibrated = true;
-            });
-            
-            redrawLines();
-        }
-
-        // Разрезание изображения
-        function cutImage() {
-            if (!isCalibrated || angleLines.length === 0) {
-                alert('Сначала выполните калибровку!');
-                return;
-            }
-            
-            // Создаем новые канвасы для каждого сегмента
-            // Для демонстрации просто показываем сообщение
-            updateStatus('Изображение разрезано по осям. Проверьте результат.');
-            alert('Изображение разрезано по заданным осям! Каждый сегмент теперь является отдельным объектом.');
-        }
-
-        // Удаление последней линии
-        function deleteLastLine() {
-            if (currentTool === 'scale' && scaleLine) {
-                scaleLine = null;
-                document.getElementById('btn-calibrate-scale').disabled = true;
-                updateStatus('Линия масштабирования удалена');
-            } else if (currentTool === 'angle90' && angleLines.length > 0) {
-                angleLines.pop();
-                document.getElementById('lines-count').textContent = angleLines.length;
-                if (angleLines.length < 2) {
-                    document.getElementById('btn-calibrate-angle').disabled = true;
-                }
-                updateStatus('Последняя линия удалена');
-            }
-            
-            redrawLines();
-        }
-
-        // Очистка всех линий
-        function clearCanvas() {
-            scaleLine = null;
-            angleLines = [];
-            document.getElementById('btn-calibrate-scale').disabled = true;
-            document.getElementById('btn-calibrate-angle').disabled = true;
-            document.getElementById('lines-count').textContent = '0';
-            redrawLines();
-            updateStatus('Все линии очищены');
-        }
-
-        // Сброс всего
-        function resetAll() {
-            if (!confirm('Вы уверены? Все изменения будут потеряны.')) return;
-            
-            currentImage = null;
-            currentTool = null;
-            scaleLine = null;
-            angleLines = [];
-            isCalibrated = false;
-            scaleFactor = 1;
-            rotationAngle = 0;
-            
-            imageCtx.clearRect(0, 0, imageCanvas.width, imageCanvas.height);
-            linesCtx.clearRect(0, 0, linesCanvas.width, linesCanvas.height);
-            
-            document.getElementById('scale-properties').style.display = 'none';
-            document.getElementById('angle90-properties').style.display = 'none';
-            document.getElementById('calibrated-info').style.display = 'none';
-            document.getElementById('instruction').style.display = 'none';
-            document.getElementById('btn-angle90').disabled = true;
-            document.getElementById('btn-cut').disabled = true;
-            document.getElementById('btn-calibrate-scale').disabled = true;
-            document.getElementById('btn-calibrate-angle').disabled = true;
-            document.getElementById('lines-count').textContent = '0';
-            document.getElementById('btn-save').disabled = true;
-            
-            document.querySelectorAll('.tool-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            
-            drawGrid();
-            updateStatus('Все сброшено. Загрузите новое изображение.');
-        }
-
-        // Сохранение результата
-        function saveResult() {
-            if (!currentImage) {
-                alert('Нет изображения для сохранения!');
-                return;
-            }
-            
-            // Создаем временный канвас для объединения
-            const tempCanvas = document.createElement('canvas');
-            tempCanvas.width = canvas.width;
-            tempCanvas.height = canvas.height;
-            const tempCtx = tempCanvas.getContext('2d');
-            
-            // Рисуем фон
-            tempCtx.fillStyle = '#ecf0f1';
-            tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
-            
-            // Рисуем изображение
-            tempCtx.drawImage(imageCanvas, 0, 0);
-            
-            // Сохраняем
-            const link = document.createElement('a');
-            link.download = 'calibrated_plan.png';
-            link.href = tempCanvas.toDataURL('image/png');
-            link.click();
-            
-            updateStatus('Результат сохранен!');
-        }
-
-        // Обновление статуса
-        function updateStatus(message) {
-            document.getElementById('status-bar').textContent = message;
-        }
-
-        // Инициализация при загрузке
-        window.onload = init;
-        window.onresize = function() {
-            const workspace = document.getElementById('workspace');
-            const container = document.getElementById('canvas-container');
-            
-            canvas.width = workspace.clientWidth;
-            canvas.height = workspace.clientHeight;
-            imageCanvas.width = workspace.clientWidth;
-            imageCanvas.height = workspace.clientHeight;
-            linesCanvas.width = workspace.clientWidth;
-            linesCanvas.height = workspace.clientHeight;
-            
-            drawGrid();
-            redrawLines();
-            
-            if (currentImage) {
-                applyTransformation();
-            }
-        };
-    </script>
+function init(){resizeCanvas();setupEvents();updateUI();loadPlan();}
+function resizeCanvas(){canvas.width=workspace.clientWidth;canvas.height=workspace.clientHeight;redraw();}
+function setupEvents(){window.addEventListener('resize',resizeCanvas);canvas.addEventListener('mousedown',onMouseDown);canvas.addEventListener('mousemove',onMouseMove);canvas.addEventListener('mouseup',onMouseUp);canvas.addEventListener('wheel',onWheel);loadPlan();}
+function loadPlan(){const input=document.createElement('input');input.type='file';input.accept='image/*';input.onchange=e=>{const file=e.target.files[0];if(file){const reader=new FileReader();reader.onload=ev=>{const img=new Image();img.onload=()=>{planImage=img;resetView();statusBar.textContent='План загружен. Рука - перемещение, колесо - зум';redraw();};img.src=ev.target.result;};reader.readAsDataURL(file);}};input.click();}
+function resetView(){if(!planImage)return;const ratio=Math.min(canvas.width*0.8/planImage.width,canvas.height*0.8/planImage.height);imageWidth=planImage.width*ratio;imageHeight=planImage.height*ratio;imageX=(canvas.width-imageWidth)/2;imageY=(canvas.height-imageHeight)/2;zoom=1;panX=0;panY=0;updateZoomDisplay();}
+function setTool(tool){currentTool=tool;document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));document.getElementById('btn'+tool.charAt(0).toUpperCase()+tool.slice(1)).classList.add('active');document.getElementById('scaleProps').style.display=tool==='scale'?'block':'none';document.getElementById('pinProps').style.display=(tool==='pin'||tool==='connect')?'block':'none';isDrawingScaleLine=false;currentScaleLine=null;connectionStartPin=null;canvas.style.cursor=tool==='hand'?'grab':'crosshair';updateStatus();redraw();}
+function onMouseDown(e){const rect=canvas.getBoundingClientRect(),mx=e.clientX-rect.left,my=e.clientY-rect.top;if(currentTool==='hand'){isDragging=true;lastMouseX=mx;lastMouseY=my;canvas.style.cursor='grabbing';}else if(currentTool==='scale'){isDrawingScaleLine=true;currentScaleLine={startX:mx,startY:my,endX:mx,endY:my};}else if(currentTool==='pin'){addPin(mx,my);}else if(currentTool==='connect'){const pin=findPin(mx,my);if(pin){if(!connectionStartPin){connectionStartPin=pin;statusBar.textContent='Выберите вторую булавку';}else{if(connectionStartPin!==pin)addConnection(connectionStartPin,pin);connectionStartPin=null;}}}else if(currentTool==='delete'){deleteAt(mx,my);}}
+function onMouseMove(e){const rect=canvas.getBoundingClientRect(),mx=e.clientX-rect.left,my=e.clientY-rect.top;if(currentTool==='hand'&&isDragging){panX+=mx-lastMouseX;panY+=my-lastMouseY;lastMouseX=mx;lastMouseY=my;redraw();}else if(currentTool==='scale'&&isDrawingScaleLine&&currentScaleLine){currentScaleLine.endX=mx;currentScaleLine.endY=my;redraw();}}
+function onMouseUp(e){if(currentTool==='hand'){isDragging=false;canvas.style.cursor='grab';}else if(currentTool==='scale'&&isDrawingScaleLine){isDrawingScaleLine=false;if(currentScaleLine){scaleLines.push(currentScaleLine);currentScaleLine=null;statusBar.textContent='Линия создана. Введите длину и нажмите Калибровать';updateUI();}}}
+function onWheel(e){e.preventDefault();if(currentTool!=='hand')return;const rect=canvas.getBoundingClientRect(),mx=e.clientX-rect.left,my=e.clientY-rect.top,zf=e.deltaY>0?0.9:1.1,nz=zoom*zf;if(nz<0.1||nz>10)return;panX=mx-(mx-panX)*zf;panY=my-(my-panY)*zf;zoom=nz;updateZoomDisplay();redraw();}
+function zoomIn(){zoom*=1.2;updateZoomDisplay();redraw();}
+function zoomOut(){zoom/=1.2;updateZoomDisplay();redraw();}
+function resetZoom(){resetView();redraw();}
+function updateZoomDisplay(){document.getElementById('zoomLevel').textContent=Math.round(zoom*100)+'%';}
+function addPin(x,y){pins.push({id:Date.now(),x,y});statusBar.textContent='Булавка поставлена. Всего: '+pins.length;updatePinsCount();redraw();}
+function addConnection(p1,p2){if(!connections.some(c=>(c.p1===p1&&c.p2===p2)||(c.p1===p2&&c.p2===p1))){connections.push({p1,p2});statusBar.textContent='Соединение создано';updateLinesCount();checkAlignBtn();redraw();}}
+function findPin(x,y){return pins.find(p=>Math.sqrt((p.x-x)**2+(p.y-y)**2)<10);}
+function deleteAt(x,y){const pi=pins.findIndex(p=>Math.sqrt((p.x-x)**2+(p.y-y)**2)<10);if(pi!==-1){const p=pins[pi];pins.splice(pi,1);connections=connections.filter(c=>c.p1!==p&&c.p2!==p);statusBar.textContent='Булавка удалена';updatePinsCount();updateLinesCount();checkAlignBtn();redraw();return;}const li=scaleLines.findIndex(l=>ptLineDist(x,y,l.startX,l.startY,l.endX,l.endY)<10);if(li!==-1){scaleLines.splice(li,1);statusBar.textContent='Линия удалена';redraw();}}
+function ptLineDist(px,py,x1,y1,x2,y2){const A=px-x1,B=py-y1,C=x2-x1,D=y2-y1,dot=A*C+B*D,lenSq=C*C+D*D,param=lenSq!==0?dot/lenSq:-1;let xx,yy;if(param<0){xx=x1;yy=y1;}else if(param>1){xx=x2;yy=y2;}else{xx=x1+param*C;yy=y1+param*D;}return Math.sqrt((px-xx)**2+(py-yy)**2);}
+function calibrateScale(){if(scaleLines.length===0){alert('Нарисуйте линию!');return;}const rl=parseFloat(document.getElementById('realLength').value);if(!rl||rl<=0){alert('Введите длину!');return;}const line=scaleLines[0],cl=Math.sqrt((line.endX-line.startX)**2+(line.endY-line.startY)**2),sf=rl/cl;imageWidth*=sf;imageHeight*=sf;line.endX=line.startX+(line.endX-line.startX)*sf;line.endY=line.startY+(line.endY-line.startY)*sf;statusBar.textContent='Масштаб откалиброван. Коэфф: '+sf.toFixed(3);redraw();}
+function alignTo90(){if(connections.length<2){alert('Нужно 2+ соединения!');return;}const fc=connections[0],dx=fc.p2.x-fc.p1.x,dy=fc.p2.y-fc.p1.y,angle=Math.atan2(dy,dx),cx=canvas.width/2,cy=canvas.height/2;pins.forEach(p=>{const rx=p.x-cx,ry=p.y-cy;p.x=cx+rx*Math.cos(-angle)-ry*Math.sin(-angle);p.y=cy+rx*Math.sin(-angle)+ry*Math.cos(-angle);});scaleLines.forEach(l=>{const rx1=l.startX-cx,ry1=l.startY-cy,rx2=l.endX-cx,ry2=l.endY-cy;l.startX=cx+rx1*Math.cos(-angle)-ry1*Math.sin(-angle);l.startY=cy+rx1*Math.sin(-angle)+ry1*Math.cos(-angle);l.endX=cx+rx2*Math.cos(-angle)-ry2*Math.sin(-angle);l.endY=cy+rx2*Math.sin(-angle)+ry2*Math.cos(-angle);});statusBar.textContent='Углы выровнены';document.getElementById('btnCutAxes').disabled=false;redraw();}
+function cutByAxes(){if(connections.length===0){alert('Нет осей!');return;}statusBar.textContent='Разрезано по осям';redraw();}
+function checkAlignBtn(){document.getElementById('btnAlign90').disabled=connections.length<2;}
+function updatePinsCount(){document.getElementById('pinsCount').textContent=pins.length;}
+function updateLinesCount(){document.getElementById('linesCount').textContent=connections.length;}
+function updateUI(){updatePinsCount();updateLinesCount();checkAlignBtn();}
+function updateStatus(){const m={hand:'Перетаскивайте план. Колесо - зум',scale:'Нарисуйте линию для калибровки',pin:'Кликните для булавки',connect:'Кликните на две булавки',delete:'Кликните для удаления'};statusBar.textContent=m[currentTool];}
+function redraw(){ctx.clearRect(0,0,canvas.width,canvas.height);ctx.save();ctx.translate(panX,panY);ctx.scale(zoom,zoom);if(planImage)ctx.drawImage(planImage,imageX,imageY,imageWidth,imageHeight);drawGrid();scaleLines.forEach(l=>{ctx.beginPath();ctx.moveTo(l.startX,l.startY);ctx.lineTo(l.endX,l.endY);ctx.strokeStyle='#e74c3c';ctx.lineWidth=3;ctx.stroke();ctx.fillStyle='#e74c3c';ctx.beginPath();ctx.arc(l.startX,l.startY,5,0,Math.PI*2);ctx.fill();ctx.beginPath();ctx.arc(l.endX,l.endY,5,0,Math.PI*2);ctx.fill();});if(isDrawingScaleLine&&currentScaleLine){ctx.beginPath();ctx.moveTo(currentScaleLine.startX,currentScaleLine.startY);ctx.lineTo(currentScaleLine.endX,currentScaleLine.endY);ctx.strokeStyle='#f39c12';ctx.lineWidth=2;ctx.setLineDash([5,5]);ctx.stroke();ctx.setLineDash([]);}connections.forEach(c=>{ctx.beginPath();ctx.moveTo(c.p1.x,c.p1.y);ctx.lineTo(c.p2.x,c.p2.y);ctx.strokeStyle='#3498db';ctx.lineWidth=2;ctx.stroke();});pins.forEach((p,i)=>{ctx.fillStyle=connectionStartPin===p?'#f1c40f':'#2ecc71';ctx.beginPath();ctx.arc(p.x,p.y,8,0,Math.PI*2);ctx.fill();ctx.fillStyle='white';ctx.font='10px Arial';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(i+1,p.x,p.y);});ctx.restore();}
+function drawGrid(){const gs=50;ctx.strokeStyle='rgba(0,0,0,0.1)';ctx.lineWidth=1;const ox=imageX%gs,oy=imageY%gs;for(let x=ox;x<imageX+imageWidth;x+=gs){ctx.beginPath();ctx.moveTo(x,imageY);ctx.lineTo(x,imageY+imageHeight);ctx.stroke();}for(let y=oy;y<imageY+imageHeight;y+=gs){ctx.beginPath();ctx.moveTo(imageX,y);ctx.lineTo(imageX+imageWidth,y);ctx.stroke();}}
+init();
+</script>
 </body>
 </html>
